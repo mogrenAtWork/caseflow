@@ -491,6 +491,7 @@ export class Pdf extends React.PureComponent {
 
     const droppedAnnotation = {
       ...this.props.allAnnotations[data.uuid],
+      page: pageNumber,
       ...coordinates
     };
 

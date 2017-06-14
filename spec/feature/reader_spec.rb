@@ -439,6 +439,41 @@ RSpec.feature "Reader" do
         expect(in_viewport("pageContainer4")).to be true
         expect(find_field("page-progress-indicator-input").value).to eq "4"
       end
+
+
+      scenario "Move a comment to another page" do
+        visit "/reader/appeal/#{appeal.vacols_id}/documents"
+
+        click_on documents[0].type
+
+        # select a page with a lot of annotations
+        annotation = documents[0].annotations[3]
+        puts annotation
+        expect(page).to have_css(".page")
+
+        #expect(page).to have_css(".page")
+        comment_id = "#commentIcon-container-#{annotation.id}"
+        page_container = "pageContainer2"
+        page_container_selector = "##{page_container}"
+
+        puts comment_id
+        source = page.find(comment_id)
+        target = page.find(page_container_selector)
+
+        source.drag_to(target)
+
+        puts source.native
+        page.driver.browser.action.move_to(source.native).
+                           click_and_hold.
+                           move_to(target.native).
+                           release.
+                           perform
+
+        scroll_element_to_view(page_container)
+                                binding.pry
+
+        
+      end
     end
 
     # This test is not really testing what we want. In fact it only works because
