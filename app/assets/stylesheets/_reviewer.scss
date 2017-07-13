@@ -551,3 +551,9 @@ input[type="search"].cf-search-input-with-close {
 .cf-table-borderless + .cf-keyboard-modal-table thead th {
   width: 23%;
 }
+
+.cf-list-spaced-out {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: none;
+}

@@ -17,12 +17,20 @@ export const DocumentListHeader = (props) => {
   const tagFilters = Object.keys(props.docFilterCriteria.tag).some((tag) =>
     props.docFilterCriteria.tag[tag]
   );
+  const numberRead = _.reduce(props.documents, (acc, doc) =>
+    acc + (doc.opened_by_current_user ? 1 : 0), 0);
+
   const filteredCategories = [].concat(
     categoryFilters ? ['categories'] : [],
     tagFilters ? ['tags'] : []).join(' ');
 
   return <div>
     <div className="usa-grid-full document-list-header">
+      <div className="cf-list-spaced-out">
+        <h1>Joe Snuffy</h1>
+        <p>{`You’ve viewed ${numberRead} out of ${props.numberOfDocuments} documents`}</p>
+      </div>
+
       <div className="usa-width-one-third">
         <SearchBar
           id="searchBar"
@@ -63,6 +71,7 @@ export const DocumentListHeader = (props) => {
 };
 
 DocumentListHeader.propTypes = {
+  documents: PropTypes.object,
   setSearch: PropTypes.func.isRequired,
   expandAll: PropTypes.bool,
   toggleExpandAll: PropTypes.func,
@@ -74,7 +83,8 @@ DocumentListHeader.propTypes = {
 const mapStateToProps = (state) => ({
   expandAll: state.ui.expandAll,
   numberOfDocuments: state.ui.filteredDocIds ? state.ui.filteredDocIds.length : _.size(state.documents),
-  docFilterCriteria: state.ui.docFilterCriteria
+  docFilterCriteria: state.ui.docFilterCriteria,
+  documents: state.documents
 });
 
 const mapDispatchToProps = (dispatch) => ({
